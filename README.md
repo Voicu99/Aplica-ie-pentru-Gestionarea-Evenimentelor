@@ -1,0 +1,1 @@
+# Aplicație pentru Gestionarea Evenimentelor
