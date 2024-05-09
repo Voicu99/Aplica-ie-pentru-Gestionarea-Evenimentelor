@@ -12,7 +12,7 @@ struct Event {
     std::string location;
 };
 
-void addEvent(std::vector<Event>& events) {
+void addEvent(std::vector<Event>* events) {
     Event newEvent;
     std::cout << "Enter event name: ";
     std::cin >> newEvent.name;
@@ -22,14 +22,14 @@ void addEvent(std::vector<Event>& events) {
     std::cin >> newEvent.time;
     std::cout << "Enter event location: ";
     std::cin >> newEvent.location;
-    events.push_back(newEvent);
+    events->push_back(newEvent);
     std::cout << "Event added successfully!\n";
 }
 
-void deleteEvent(std::vector<Event>& events, const std::string& eventName) {
-    auto it = std::find_if(events.begin(), events.end(), [&eventName](const Event& e) { return e.name == eventName; });
-    if (it != events.end()) {
-        events.erase(it);
+void deleteEvent(std::vector<Event>* events, const std::string& eventName) {
+    auto it = std::find_if(events->begin(), events->end(), [&eventName](const Event& e) { return e.name == eventName; });
+    if (it != events->end()) {
+        events->erase(it);
         std::cout << "Event deleted successfully!\n";
     }
     else {
@@ -37,20 +37,20 @@ void deleteEvent(std::vector<Event>& events, const std::string& eventName) {
     }
 }
 
-void printEvents(const std::vector<Event>& events) {
-    if (events.empty()) {
+void printEvents(const std::vector<Event>* events) {
+    if (events->empty()) {
         std::cout << "No events found!\n";
     }
     else {
         std::cout << "Events:\n";
-        for (const auto& event : events) {
+        for (const auto& event : *events) {
             std::cout << "Name: " << event.name << ", Date: " << event.date << ", Time: " << event.time << ", Location: " << event.location << std::endl;
         }
     }
 }
 
 int main() {
-    std::vector<Event> events;
+    std::vector<Event>* events = new std::vector<Event>();
     std::string input;
 
     do {
@@ -86,8 +86,11 @@ int main() {
 
     } while (input == "yes");
 
+    delete events; // Eliberam memoria alocata pe heap
+    std::cout << "Exiting...\n";
     return 0;
 }
+
 
 
 
